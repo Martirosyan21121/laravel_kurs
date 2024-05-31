@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class RegisterController extends Controller
+class UserController extends Controller
 {
     public function showRegistrationForm()
     {
@@ -18,7 +18,6 @@ class RegisterController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-
         return view('user.userSinglePage', compact('user'));
     }
 
