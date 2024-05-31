@@ -12,13 +12,21 @@ class RegisterController extends Controller
 {
     public function showRegistrationForm()
     {
-        return view('register');
+        return view('user.register');
     }
+
+    public function show($id)
+    {
+        $user = User::findOrFail($id);
+
+        return view('user.userSinglePage', compact('user'));
+    }
+
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-         $this->create($request->all());
-        return redirect()->route('register')->with('success', 'Registration successful!');
+        $user = $this->create($request->all());
+        return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
     protected function validator(array $data)
     {

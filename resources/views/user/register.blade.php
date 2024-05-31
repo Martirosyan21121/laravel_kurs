@@ -10,11 +10,6 @@
 <div class="container">
     <br>
     <h2>Register</h2>
-{{--    @if (session('success'))--}}
-{{--        <div class="alert alert-success" id="successMessage">--}}
-{{--            {{ session('success') }}--}}
-{{--        </div>--}}
-{{--    @endif--}}
     <form method="POST" action="{{ route('register') }}">
         @csrf
         <div class="form-group">
@@ -33,14 +28,6 @@
     </form>
 
 </div>
-<script>
-    setTimeout(function() {
-        let successMessage = document.getElementById('successMessage');
-        if (successMessage) {
-            successMessage.style.display = 'none';
-        }
-    }, 3000);
-</script>
 </body>
 </html>
 
