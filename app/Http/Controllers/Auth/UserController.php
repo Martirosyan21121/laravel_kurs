@@ -39,8 +39,8 @@ class UserController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $this->validatorLogin($request->all())->validate();
-        if (Auth::attempt($credentials)) {
-            $userId = Auth::id();
+        if (Auth::guard('users')->attempt($credentials)) {
+            $userId = Auth::guard('users')->id();
             return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
         }
 
@@ -48,6 +48,7 @@ class UserController extends Controller
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
     }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -68,11 +69,12 @@ class UserController extends Controller
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [
-            'email' => ['required', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/'],
+            'email' => ['required', 'string', 'email', 'max:255', 'exists:users,email', 'regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/'],
             'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/'],
         ], [
             'email.regex' => 'Please enter a valid email address.',
             'email.required' => 'The email field is required.',
+            'email.exists' => 'Email not found.',
             'email.email' => 'Please enter a valid email address.',
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least 8 characters.',
@@ -87,7 +89,6 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-
     public function logout(Request $request)
     {
         Auth::logout();
