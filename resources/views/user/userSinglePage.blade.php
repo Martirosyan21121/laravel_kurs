@@ -25,6 +25,11 @@
         <p><strong>Email:</strong> {{ $user->email }}</p>
     </div>
 
+    <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="btn btn-warning">Logout</button>
+    </form>
+
 </div>
 <script>
     setTimeout(function () {

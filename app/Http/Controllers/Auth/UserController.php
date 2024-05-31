@@ -11,29 +11,30 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+    public function home()
+    {
+        return view('home');
+    }
+
     public function showRegistrationForm()
     {
         return view('user.register');
     }
-
     public function show($id)
     {
         $user = User::findOrFail($id);
         return view('user.userSinglePage', compact('user'));
     }
-
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
-
     public function loginForm()
     {
         return view('user.login');
     }
-
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -47,7 +48,6 @@ class UserController extends Controller
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
     }
-
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -65,7 +65,6 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [
@@ -80,8 +79,6 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
-
     protected function create(array $data)
     {
         return User::create([
@@ -89,5 +86,11 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect()->route('home')->with('successLogout', 'You are successfully logged out!');
     }
 }
