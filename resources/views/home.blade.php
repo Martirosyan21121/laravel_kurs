@@ -12,10 +12,22 @@
 </head>
 <body>
 <h1 style="margin-top: 10px; text-align: center">Home Page</h1>
+@if (session('successLogout'))
+    <div class="alert alert-info" id="logoutMessage" style="width: 300px; margin-left: 30px">
+        {{ session('successLogout') }}
+    </div>
+@endif
 <header style="margin-left: 30px">
     <a href="/register" class="btn btn-success">Register Page</a>
     <a href="/login" class="btn btn-success" style="margin-left: 20px" >Login Page</a>
 </header>
-
+<script>
+    setTimeout(function () {
+        let message = document.getElementById('logoutMessage');
+        if (message) {
+            message.style.display = 'none'
+        }
+    }, 3000);
+</script>
 </body>
 </html>

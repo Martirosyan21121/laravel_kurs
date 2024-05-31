@@ -88,7 +88,7 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-    public function logout(Request $request)
+    public function logout()
     {
         Auth::logout();
         return redirect()->route('home')->with('successLogout', 'You are successfully logged out!');
