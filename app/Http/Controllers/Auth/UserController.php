@@ -39,8 +39,8 @@ class UserController extends Controller
     {
         $credentials = $request->only('email', 'password');
         $this->validatorLogin($request->all())->validate();
-        if (Auth::guard('users')->attempt($credentials)) {
-            $userId = Auth::guard('users')->id();
+        if (Auth::attempt($credentials)) {
+            $userId = Auth::id();
             return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
         }
 
@@ -48,7 +48,6 @@ class UserController extends Controller
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
     }
-
     protected function validator(array $data)
     {
         return Validator::make($data, [
