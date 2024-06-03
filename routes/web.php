@@ -19,3 +19,4 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middl
 
 // for admin
 Route::get('/admin/{id}', [UserController::class, 'showAdmin'])->name('admin.adminSinglePage')->middleware('admin');
+
