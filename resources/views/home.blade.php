@@ -21,10 +21,7 @@
     <a href="/register" class="btn btn-success">Register Page</a>
     <a href="/login" class="btn btn-success" style="margin-left: 20px" >Login Page</a>
 </header>
-<form action="{{ route('logout') }}" method="POST">
-    @csrf
-    <button type="submit" class="btn btn-warning">Logout</button>
-</form>
+
 <script>
     setTimeout(function () {
         let message = document.getElementById('logoutMessage');

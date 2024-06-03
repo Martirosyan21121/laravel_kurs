@@ -20,7 +20,6 @@
             {{ session('successLogin') }}
         </div>
     @endif
-    <a href="/register" class="btn btn-success">Register Page</a>
 
     <div>
         <p><strong>Name:</strong> {{ $user->name }}</p>

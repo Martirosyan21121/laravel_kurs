@@ -10,6 +10,7 @@ Route::get('/error', [UserController::class])->name('error');
 
 Route::post('register', [UserController::class, 'register'])->name('register');
 Route::post('/login', [UserController::class, 'login']);
+
 //for users
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.userSinglePage')->middleware('user');
 
