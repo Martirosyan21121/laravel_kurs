@@ -9,27 +9,23 @@
 <body>
 <div class="container">
     <h1 style="margin-top: 10px; text-align: center">Admin profile</h1>
-    @if (session('success'))
-        <div class="alert alert-success" id="successMessage" style="width: 300px;">
-            {{ session('success') }}
-        </div>
-    @endif
 
     @if (session('successLogin'))
-        <div class="alert alert-success" id="successMessage" style="width: 300px;">
+        <div class="alert alert-success" id="successMessage" style="width: 400px;">
             {{ session('successLogin') }}
         </div>
     @endif
 
     <div>
-        <p><strong>Name:</strong> {{ $user->name }}</p>
-        <p><strong>Email:</strong> {{ $user->email }}</p>
+        <p><strong>Name:</strong> {{ $admin->name }}</p>
+        <p><strong>Email:</strong> {{ $admin->email }}</p>
     </div>
 
     <form action="{{ route('logout') }}" method="POST">
         @csrf
         <button type="submit" class="btn btn-warning">Logout</button>
     </form>
+
 
 </div>
 <script>

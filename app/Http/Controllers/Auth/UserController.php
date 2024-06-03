@@ -24,16 +24,22 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('user.userSinglePage', compact('user'));
     }
+    public function userSinglePage()
+    {
+      $userId = Auth::id();
+      return redirect()->route('user.userSinglePage', $userId);
+    }
 
     public function showAdmin($id)
     {
-        $user = User::findOrFail($id);
-        return view('admin.adminSinglePage', compact('user'));
+        $admin = User::findOrFail($id);
+        return view('admin.adminSinglePage', compact('admin'));
     }
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
+        Auth::login($user);
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
     public function loginForm()

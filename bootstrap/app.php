@@ -23,8 +23,5 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (){
-            // for 404, 500, and for all
-            return redirect()->route('error')->with('error', 'You need to be logged in as a user to access this page.');
-        });
+
     })->create();
