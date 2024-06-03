@@ -5,6 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .table td:nth-child(2), /* Target the 2nd, 3rd, and 4th columns (adjust indices if needed) */
+        .table td:nth-child(3),
+        .table td:nth-child(4) {
+            word-wrap: break-word;
+            max-width: 200px; /* Adjust the maximum width as desired */
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -24,8 +32,14 @@
         <tr>
             <th scope="row">1</th>
             <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>Ottosdcsd sad v sdvg  dfbdfb fb  fdbdfsdf   dfbd sdfvdsfbdsfb
+                dfbsdfbd bfd dfsbdf bdfbsdfb dfb dfbdfb  dfbdfb dfbdfbdfb  dfbdfb fgb dfbd</td>
+            <td><select>
+                    <option>1</option>
+                    <option>1</option>
+                    <option>1</option>
+                    <option>1</option>
+                </select></td>
         </tr>
         <tr>
             <th scope="row">2</th>
