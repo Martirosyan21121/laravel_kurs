@@ -15,7 +15,6 @@ class UserController extends Controller
     {
         return view('home');
     }
-
     public function showRegistrationForm()
     {
         return view('user.register');
@@ -24,6 +23,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         return view('user.userSinglePage', compact('user'));
+    }
+
+    public function showAdmin($id)
+    {
+        $user = User::findOrFail($id);
+        return view('admin.adminSinglePage', compact('user'));
     }
     public function register(Request $request)
     {
@@ -40,8 +45,15 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
         $this->validatorLogin($request->all())->validate();
         if (Auth::attempt($credentials)) {
+            $user = Auth::user();
             $userId = Auth::id();
-            return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
+
+            if (isset($user->type) && $user->type === 'ADMIN'){
+                var_dump($user->type);
+                return redirect()->route('admin.adminSinglePage', $userId)->with('successLogin', 'You are successfully login in to admin page!');
+            } else{
+                return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
+            }
         }
 
         return back()->withErrors([
@@ -74,7 +86,6 @@ class UserController extends Controller
             'email.regex' => 'Please enter a valid email address.',
             'email.required' => 'The email field is required.',
             'email.exists' => 'Email not found.',
-            'email.email' => 'Please enter a valid email address.',
             'password.required' => 'The password field is required.',
             'password.min' => 'The password must be at least 8 characters.',
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
