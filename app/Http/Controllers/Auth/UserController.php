@@ -49,7 +49,6 @@ class UserController extends Controller
             $userId = Auth::id();
 
             if (isset($user->type) && $user->type === 'ADMIN'){
-                var_dump($user->type);
                 return redirect()->route('admin.adminSinglePage', $userId)->with('successLogin', 'You are successfully login in to admin page!');
             } else{
                 return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
