@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
+
 // for all
 Route::get('/', [UserController::class, 'home'])->name('home');
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register');
@@ -18,7 +19,10 @@ Route::get('/addTask', [TaskController::class, 'addTaskForm'])->name('user.addTa
 Route::get('/userPage', [UserController::class, 'userSinglePage'])->middleware('user');
 Route::get('/allTasks', [TaskController::class, 'allTasks'])->name('tasks.allTasks')->middleware('user');
 Route::get('/task/delete/{id}', [TaskController::class, 'deleteTask'])->name('tasks.deleteTask')->middleware('user');
+Route::get('/task/update/{id}', [TaskController::class, 'updateTaskForm'])->name('tasks.updateTask')->middleware('user');
+Route::get('/task/updateStatus/{id}', [TaskController::class, 'updateTaskStatus'])->middleware('user');
 
+Route::post('/task/updateTaskData/{id}', [TaskController::class, 'updateTask'])->name('tasks.updateTaskData')->middleware('user');
 Route::post('/addTaskData', [TaskController::class, 'addTaskData'])->name('tasks.addTaskData')->middleware('user');
 
 //for all Authenticated

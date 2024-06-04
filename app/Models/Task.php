@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
     use HasFactory;
+
     protected $fillable = [
         'title',
         'description',
         'status',
         'user_id'
     ];
+
     protected function casts(): array
     {
         return [
@@ -21,6 +23,7 @@ class Task extends Model
             'updated_at' => 'datetime',
         ];
     }
+
     public static function saveTask(array $data)
     {
         $task = Task::find($data['user_id']) ?? new Task;
@@ -28,6 +31,7 @@ class Task extends Model
         $task->save();
         return $task;
     }
+
     public static function findByUserId($userId)
     {
         return self::where('user_id', $userId)->get();
@@ -41,5 +45,10 @@ class Task extends Model
             return true;
         }
         return false;
+    }
+
+    public static function findTaskById($taskId)
+    {
+        return self::find($taskId);
     }
 }

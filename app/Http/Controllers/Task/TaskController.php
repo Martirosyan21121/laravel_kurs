@@ -14,7 +14,6 @@ class TaskController extends Controller
     {
         return view('tasks.addTask');
     }
-
     public function allTasks()
     {
         $userId = Auth::id();
@@ -28,6 +27,27 @@ class TaskController extends Controller
         $allTasks = Task::findByUserId($userId);
         return redirect()->route('tasks.allTasks')->with(['tasks' => $allTasks, 'success' => 'The task was successfully deleted!']);
     }
+    public function updateTaskForm($taskId)
+    {
+        $task = Task::findTaskById($taskId);
+        return view('tasks.updateTask', ['task' => $task]);
+    }
+    public function updateTaskStatus(Request $request, $taskId)
+    {
+        $status = $request->query('status');
+        $task = Task::findOrFail($taskId);
+        $task->status = $status;
+        $task->save();
+    }
+    public function updateTask($taskId, Request $request)
+    {
+        $task = Task::findTaskById($taskId);
+        $this->validatorTask($request->all())->validate();
+        $task->update($request->all());
+        $userId = Auth::id();
+        $allTasks = Task::findByUserId($userId);
+        return redirect()->route('tasks.allTasks')->with(['tasks' => $allTasks, 'success' => 'The task was successfully updated!']);
+    }
     public function addTaskData(Request $request)
     {
         $this->validatorTask($request->all())->validate();
@@ -35,7 +55,6 @@ class TaskController extends Controller
         $userId = Auth::id();
         $allTasks = Task::findByUserId($userId);
         return redirect()->route('tasks.allTasks')->with(['tasks' => $allTasks, 'success' => 'The task was successfully added!']);
-
     }
     public function create(array $data)
     {
@@ -49,8 +68,10 @@ class TaskController extends Controller
     {
         return Validator::make($data, [
             'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
         ], [
             'title.required' => 'The title field is required.',
+            'description.required' => 'The description field is required.',
         ]);
     }
 }

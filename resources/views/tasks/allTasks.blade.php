@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>All task Page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <style>
         .table td:nth-child(2),
@@ -46,15 +46,15 @@
                 <th scope="row">{{$task->id}}</th>
                 <td>{{$task->title}}</td>
                 <td>{{$task->description}}</td>
-                <td><select class="form-select">
-                        <option>Not Started</option>
-                        <option>In Progress</option>
-                        <option>In Test</option>
-                        <option>Done</option>
+                <td><select class="form-control" name="status" onchange="updateTaskStatus({{$task->id}}, this.value)">
+                        <option value="0" @if($task->status === 0) selected @endif>Not Started</option>
+                        <option value="1" @if($task->status === 1) selected @endif>In Progress</option>
+                        <option value="2" @if($task->status === 2) selected @endif>In Test</option>
+                        <option value="3" @if($task->status === 3) selected @endif>Done</option>
                     </select></td>
                 <td>{{$task->created_at}}</td>
                 <td>{{$task->updated_at}}</td>
-                <td><a class="btn btn-primary">Update</a></td>
+                <td><a class="btn btn-primary" href="/task/update/{{$task->id}}">Update</a></td>
                 <td><a class="btn btn-danger" href="/task/delete/{{$task->id}}">Delete</a></td>
             </tr>
         @endforeach
@@ -68,6 +68,17 @@
             message.style.display = 'none'
         }
     }, 3000);
+
+    function updateTaskStatus(taskId, status) {
+        fetch(`/task/updateStatus/${taskId}?status=${status}`, {
+            method: 'GET',
+        })
+            .then(response => {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            })
+    }
 </script>
 </body>
 </html>
