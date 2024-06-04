@@ -15,10 +15,9 @@ class AdminController extends Controller
         $admin = User::findOrFail($id);
         return view('admin.adminSinglePage', compact('admin'));
     }
-
     public function showAllUsers()
     {
-        $allUsers = User::all();
+        $allUsers = User::showAllUsers();
         return view('admin.allUsers', ['users' => $allUsers]);
     }
     public function updateUserByAdminForm($id)
@@ -26,7 +25,12 @@ class AdminController extends Controller
         $updateUser = User::findOrFail($id);
         return view('admin.updateUserByAdmin', ['user' => $updateUser]);
     }
-
+    public function deactivateUserByAdmin($id)
+    {
+        Admin::deactivateUser($id);
+        $allUsers = User::showAllUsersByStatus1();
+        return view('admin.deactivateUsers', ['user' => $allUsers]);
+    }
     public function updateUserData($id, Request $request)
     {
         $user = User::findOrFail($id);

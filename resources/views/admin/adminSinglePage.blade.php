@@ -17,7 +17,7 @@
     @endif
     <header>
         <a href="/allUsers" class="btn btn-success">All Users</a>
-        <a href="/addUserData" class="btn btn-success">Add User</a>
+        <a href="/addUserData" class="btn btn-success" style="margin-left: 20px">Add User</a>
     </header>
     <br>
     <div>

@@ -29,4 +29,14 @@ class User extends Authenticatable
             'updated_at' => 'datetime',
         ];
     }
+
+    public static function showAllUsers()
+    {
+        return self::where('type', 'USER')->get();
+    }
+
+    public static function showAllUsersByStatus1()
+    {
+        return self::where('status', 1)->get();
+    }
 }

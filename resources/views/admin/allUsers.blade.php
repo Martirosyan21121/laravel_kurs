@@ -18,7 +18,8 @@
 <div class="container">
     <h2 style="margin-top: 10px; text-align: center">All Users</h2>
     <header>
-        <a class="btn btn-danger" style="color: white;" href="/userPage">Back</a>
+        <a class="btn btn-danger" style="color: white;" href="/admin">Back</a>
+        <a class="btn btn-danger" style="color: white;" href="/userPage">Deactivate Users</a>
     </header>
     <br>
 

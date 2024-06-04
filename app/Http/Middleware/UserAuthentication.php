@@ -23,7 +23,7 @@ class UserAuthentication
             }
             else return $next($request);
         }
-        return redirect()->route('login')->with('error', 'You need to be logged in as a user to access this page.');
+        return redirect()->route('login');
     }
 
     function isAuthenticated(Request $request): bool
