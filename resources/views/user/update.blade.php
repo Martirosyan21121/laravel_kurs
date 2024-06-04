@@ -39,7 +39,7 @@
             </div>
         @endif
         <button type="submit" class="btn btn-primary">Update</button>
-        <a class="btn btn-danger" style="color: white; margin-left: 20px" href="/allUsers">Back</a>
+        <a class="btn btn-danger" style="color: white; margin-left: 20px" href="/userPage">Back</a>
     </form>
 </div>
 </body>

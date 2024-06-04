@@ -12,7 +12,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if ($this->isAuthenticated($request)) {
-            return $next($request);
+                return $next($request);
         }
         return redirect()->route('login')->with('error', 'You need to be logged in to access this page.');
     }

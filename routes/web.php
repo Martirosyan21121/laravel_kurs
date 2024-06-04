@@ -24,7 +24,6 @@ Route::get('/task/delete/{id}', [TaskController::class, 'deleteTask'])->name('ta
 Route::get('/task/update/{id}', [TaskController::class, 'updateTaskForm'])->name('tasks.updateTask')->middleware('user');
 Route::get('/task/updateStatus/{id}', [TaskController::class, 'updateTaskStatus'])->middleware('user');
 
-
 Route::post('/task/updateTaskData/{id}', [TaskController::class, 'updateTask'])->name('tasks.updateTaskData')->middleware('user');
 Route::post('/addTaskData', [TaskController::class, 'addTaskData'])->name('tasks.addTaskData')->middleware('user');
 Route::post('/updateData', [UserController::class, 'updateData'])->name('tasks.addTaskData')->middleware('user');
