@@ -21,12 +21,25 @@ class Task extends Model
             'updated_at' => 'datetime',
         ];
     }
-
     public static function saveTask(array $data)
     {
         $task = Task::find($data['user_id']) ?? new Task;
         $task->fill($data);
         $task->save();
         return $task;
+    }
+    public static function findByUserId($userId)
+    {
+        return self::where('user_id', $userId)->get();
+    }
+
+    public static function deleteTask($taskId)
+    {
+        $task = self::find($taskId);
+        if ($task) {
+            $task->delete();
+            return true;
+        }
+        return false;
     }
 }

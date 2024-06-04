@@ -9,7 +9,7 @@ Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('
 Route::get('/login', [UserController::class, 'loginForm'])->name('login');
 Route::get('/error', [UserController::class])->name('error');
 
-Route::post('register', [UserController::class, 'register'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('register');
 Route::post('/login', [UserController::class, 'login']);
 
 //for users
@@ -17,6 +17,7 @@ Route::get('/user/{id}', [UserController::class, 'show'])->name('user.userSingle
 Route::get('/addTask', [TaskController::class, 'addTaskForm'])->name('user.addTask')->middleware('user');
 Route::get('/userPage', [UserController::class, 'userSinglePage'])->middleware('user');
 Route::get('/allTasks', [TaskController::class, 'allTasks'])->name('tasks.allTasks')->middleware('user');
+Route::get('/task/delete/{id}', [TaskController::class, 'deleteTask'])->name('tasks.deleteTask')->middleware('user');
 
 Route::post('/addTaskData', [TaskController::class, 'addTaskData'])->name('tasks.addTaskData')->middleware('user');
 

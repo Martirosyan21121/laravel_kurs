@@ -17,17 +17,26 @@ class TaskController extends Controller
 
     public function allTasks()
     {
-        return view('tasks.allTasks');
+        $userId = Auth::id();
+        $allTasks = Task::findByUserId($userId);
+        return view('tasks.allTasks', ['tasks' => $allTasks]);
     }
-
+    public function deleteTask($taskId)
+    {
+        Task::deleteTask($taskId);
+        $userId = Auth::id();
+        $allTasks = Task::findByUserId($userId);
+        return redirect()->route('tasks.allTasks')->with(['tasks' => $allTasks, 'success' => 'The task was successfully deleted!']);
+    }
     public function addTaskData(Request $request)
     {
         $this->validatorTask($request->all())->validate();
         $this->create($request->all());
         $userId = Auth::id();
-        return redirect()->route('tasks.allTasks', $userId)->with('success', 'The task successfully added!');
-    }
+        $allTasks = Task::findByUserId($userId);
+        return redirect()->route('tasks.allTasks')->with(['tasks' => $allTasks, 'success' => 'The task was successfully added!']);
 
+    }
     public function create(array $data)
     {
         return Task::saveTask([

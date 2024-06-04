@@ -52,7 +52,7 @@ class UserController extends Controller
         $this->validatorLogin($request->all())->validate();
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $userId = Auth::id();
+            $userId = $user['id'];
 
             if (isset($user->type) && $user->type === 'ADMIN'){
                 return redirect()->route('admin.adminSinglePage', $userId)->with('successLogin', 'You are successfully login in to admin page!');

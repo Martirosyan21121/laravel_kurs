@@ -22,6 +22,7 @@
     @endif
     <header>
         <a href="/addTask" class="btn btn-success">Add task Page</a>
+        <a href="/allTasks" class="btn btn-success" style="margin-left: 20px">All tasks</a>
     </header>
     <br>
     <div>
