@@ -15,7 +15,11 @@
             {{ session('successLogin') }}
         </div>
     @endif
-
+    <header>
+        <a href="/allUsers" class="btn btn-success">All Users</a>
+        <a href="/addUserData" class="btn btn-success">Add User</a>
+    </header>
+    <br>
     <div>
         <p><strong>Name:</strong> {{ $admin->name }}</p>
         <p><strong>Email:</strong> {{ $admin->email }}</p>

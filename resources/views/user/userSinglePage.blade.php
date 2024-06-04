@@ -20,9 +20,16 @@
             {{ session('successLogin') }}
         </div>
     @endif
+
+    @if (session('successUpdate'))
+        <div class="alert alert-success" id="successMessage" style="width: 300px;">
+            {{ session('successUpdate') }}
+        </div>
+    @endif
     <header>
-        <a href="/addTask" class="btn btn-success">Add task Page</a>
+        <a href="/addTask" class="btn btn-success">Add task</a>
         <a href="/allTasks" class="btn btn-success" style="margin-left: 20px">All tasks</a>
+        <a class="btn btn-success" href="/update" style="margin-left: 20px">Update</a>
     </header>
     <br>
     <div>

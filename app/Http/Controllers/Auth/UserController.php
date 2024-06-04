@@ -15,26 +15,24 @@ class UserController extends Controller
     {
         return view('home');
     }
+
     public function showRegistrationForm()
     {
         return view('user.register');
     }
+
     public function show($id)
     {
         $user = User::findOrFail($id);
         return view('user.userSinglePage', compact('user'));
     }
+
     public function userSinglePage()
     {
-      $userId = Auth::id();
-      return redirect()->route('user.userSinglePage', $userId);
+        $userId = Auth::id();
+        return redirect()->route('user.userSinglePage', $userId);
     }
 
-    public function showAdmin($id)
-    {
-        $admin = User::findOrFail($id);
-        return view('admin.adminSinglePage', compact('admin'));
-    }
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
@@ -42,10 +40,12 @@ class UserController extends Controller
         Auth::login($user);
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
+
     public function loginForm()
     {
         return view('user.login');
     }
+
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -54,9 +54,9 @@ class UserController extends Controller
             $user = Auth::user();
             $userId = $user['id'];
 
-            if (isset($user->type) && $user->type === 'ADMIN'){
+            if (isset($user->type) && $user->type === 'ADMIN') {
                 return redirect()->route('admin.adminSinglePage', $userId)->with('successLogin', 'You are successfully login in to admin page!');
-            } else{
+            } else {
                 return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
             }
         }
@@ -64,6 +64,18 @@ class UserController extends Controller
         return back()->withErrors([
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
+    }
+    public function updateDataForm()
+    {
+        $user = Auth::user();
+        return view('user.update', ['user' => $user])->with('successLogin', 'You are successfully login in to admin page!');
+    }
+    public function updateData(Request $request)
+    {
+        $userId = Auth::id();
+        $this->validatorUpdate($request->all())->validate();
+        $this->update($request->all());
+        return redirect()->route('user.userSinglePage', $userId)->with('successUpdate', 'You are successfully update your account!');
     }
     protected function validator(array $data)
     {
@@ -96,6 +108,18 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
+    protected function validatorUpdate(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255', 'min:5'],
+            'email' => ['required', 'string', 'email', 'max:255', 'regex:/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/'],
+        ], [
+            'name.required' => 'The name field is required.',
+            'name.min' => 'The name must be at least 5 characters.',
+            'email.regex' => 'Please enter a valid email address.',
+            'email.required' => 'The email field is required.',
+        ]);
+    }
     protected function create(array $data)
     {
         return User::create([
@@ -103,6 +127,13 @@ class UserController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+    }
+    protected function update(array $data)
+    {
+        $user = Auth::user();
+        $user->fill($data);
+        $user->save();
+        return $user;
     }
     public function logout()
     {
