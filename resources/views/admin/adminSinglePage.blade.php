@@ -17,7 +17,7 @@
     @endif
     <header>
         <a href="/allUsers" class="btn btn-success">All Users</a>
-        <a href="/addUserData" class="btn btn-success" style="margin-left: 20px">Add User</a>
+        <a href="/addUserByAdminForm" class="btn btn-success" style="margin-left: 20px">Add User</a>
     </header>
     <br>
     <div>
@@ -29,7 +29,6 @@
         @csrf
         <button type="submit" class="btn btn-warning">Logout</button>
     </form>
-
 
 </div>
 <script>

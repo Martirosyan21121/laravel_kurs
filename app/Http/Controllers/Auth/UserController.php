@@ -53,8 +53,9 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             $userId = $user['id'];
-
-            if (isset($user->type) && $user->type === 'ADMIN') {
+            if ($user['status'] == 1){
+                return view('user.deactivatePage');
+            } else if (isset($user->type) && $user->type === 'ADMIN') {
                 return redirect()->route('admin.adminSinglePage', $userId)->with('successLogin', 'You are successfully login in to admin page!');
             } else {
                 return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
@@ -65,11 +66,13 @@ class UserController extends Controller
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
     }
+
     public function updateDataForm()
     {
         $user = Auth::user();
         return view('user.update', ['user' => $user])->with('successLogin', 'You are successfully login in to admin page!');
     }
+
     public function updateData(Request $request)
     {
         $userId = Auth::id();
@@ -77,6 +80,7 @@ class UserController extends Controller
         $this->update($request->all());
         return redirect()->route('user.userSinglePage', $userId)->with('successUpdate', 'You are successfully update your account!');
     }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -94,6 +98,7 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
+
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [
@@ -108,6 +113,7 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
+
     protected function validatorUpdate(array $data)
     {
         return Validator::make($data, [
@@ -120,6 +126,7 @@ class UserController extends Controller
             'email.required' => 'The email field is required.',
         ]);
     }
+
     protected function create(array $data)
     {
         return User::create([
@@ -128,6 +135,7 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
     protected function update(array $data)
     {
         $user = Auth::user();
@@ -135,6 +143,7 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
+
     public function logout()
     {
         Auth::logout();

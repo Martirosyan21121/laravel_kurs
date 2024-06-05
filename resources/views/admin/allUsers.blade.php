@@ -18,13 +18,13 @@
 <div class="container">
     <h2 style="margin-top: 10px; text-align: center">All Users</h2>
     <header>
-        <a class="btn btn-danger" style="color: white;" href="/admin">Back</a>
-        <a class="btn btn-danger" style="color: white;" href="/userPage">Deactivate Users</a>
+        <a class="btn btn-danger" style="color: white;" href="/adminPage">Back</a>
+        <a class="btn btn-warning" style="color: white; margin-left: 20px" href="/allUsers/deactivateUsers">Deactivate Users</a>
     </header>
     <br>
 
     @if (session('success'))
-        <div class="alert alert-success" id="successMessage" style="width: 300px;">
+        <div class="alert alert-success" id="successMessage" style="width: 350px;">
             {{ session('success') }}
         </div>
     @endif
@@ -37,7 +37,7 @@
             <th scope="col">Created at</th>
             <th scope="col">Updated at</th>
             <th scope="col">Updated</th>
-            <th scope="col">Delete</th>
+            <th scope="col">Deactivate</th>
         </tr>
         </thead>
         <tbody>
@@ -49,7 +49,7 @@
                 <td>{{$user->created_at}}</td>
                 <td>{{$user->updated_at}}</td>
                 <td><a class="btn btn-primary" href="/update/user/byAdmin/{{$user->id}}">Update</a></td>
-                <td><a class="btn btn-danger" href="/deactivate/user/byAdmin/{{$user->id}}">Deactivate</a></td>
+                <td><a class="btn btn-warning" href="/deactivate/user/byAdmin/{{$user->id}}">Deactivate</a></td>
             </tr>
         @endforeach
         </tbody>

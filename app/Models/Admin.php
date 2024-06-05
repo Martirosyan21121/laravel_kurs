@@ -30,4 +30,12 @@ class Admin extends Model
         $user->save();
         return true;
     }
+
+    public static function activateUser($userId)
+    {
+        $user = User::findOrFail($userId);
+        $user->status = 0;
+        $user->save();
+        return true;
+    }
 }

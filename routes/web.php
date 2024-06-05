@@ -34,9 +34,13 @@ Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middl
 // for admin
 Route::get('/admin/{id}', [AdminController::class, 'showAdmin'])->name('admin.adminSinglePage')->middleware('admin');
 Route::get('/allUsers', [AdminController::class, 'showAllUsers'])->name('admin.allUsersData')->middleware('admin');
+Route::get('/allUsers/deactivateUsers', [AdminController::class, 'showAllDeactivateUsers'])->name('admin.allDeactivateUsersData')->middleware('admin');
 Route::get('/adminPage', [AdminController::class, 'adminPage'])->name('admin.adminSinglePageForm')->middleware('admin');
 Route::get('/update/user/byAdmin/{id}', [AdminController::class, 'updateUserByAdminForm'])->name('admin.updateUserByAdminForm')->middleware('admin');
 Route::get('/deactivate/user/byAdmin/{id}', [AdminController::class, 'deactivateUserByAdmin'])->name('admin.deactivateUserByAdmin')->middleware('admin');
+Route::get('/activate/user/byAdmin/{id}', [AdminController::class, 'activateUserByAdmin'])->name('admin.activateUserByAdmin')->middleware('admin');
+Route::get('/delete/user/byAdmin/{id}', [AdminController::class, 'deleteUserByAdmin'])->name('admin.deleteUserByAdmin')->middleware('admin');
+Route::get('/addUserByAdminForm', [AdminController::class, 'addUserByAdminForm'])->name('admin.addUserByAdminForm')->middleware('admin');
 
+Route::post('/addUserByAdmin', [AdminController::class, 'addUserByAdmin'])->name('admin.addUserByAdmin')->middleware('admin');
 Route::post('/update/userData/{id}', [AdminController::class, 'updateUserData'])->name('admin.updateUserByAdmin')->middleware('admin');
-

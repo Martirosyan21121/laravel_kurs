@@ -32,11 +32,14 @@ class User extends Authenticatable
 
     public static function showAllUsers()
     {
-        return self::where('type', 'USER')->get();
+        return self::where('type', 'USER')
+            ->where('status', 0)
+            ->get();
     }
 
     public static function showAllUsersByStatus1()
     {
-        return self::where('status', 1)->get();
+        return self::where('status', 1)
+            ->get();
     }
 }
