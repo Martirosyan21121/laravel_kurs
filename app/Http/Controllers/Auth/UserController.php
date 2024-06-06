@@ -15,12 +15,10 @@ class UserController extends Controller
     {
         return view('home');
     }
-
     public function showRegistrationForm()
     {
         return view('user.register');
     }
-
     public function show($id)
     {
         $user = User::findOrFail($id);
@@ -32,7 +30,6 @@ class UserController extends Controller
         $userId = Auth::id();
         return redirect()->route('user.userSinglePage', $userId);
     }
-
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
@@ -40,7 +37,6 @@ class UserController extends Controller
         Auth::login($user);
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
-
     public function loginForm()
     {
         return view('user.login');
@@ -113,7 +109,6 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function validatorUpdate(array $data)
     {
         return Validator::make($data, [
@@ -126,7 +121,6 @@ class UserController extends Controller
             'email.required' => 'The email field is required.',
         ]);
     }
-
     protected function create(array $data)
     {
         return User::create([
@@ -135,7 +129,6 @@ class UserController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-
     protected function update(array $data)
     {
         $user = Auth::user();
@@ -143,7 +136,6 @@ class UserController extends Controller
         $user->save();
         return $user;
     }
-
     public function logout()
     {
         Auth::logout();

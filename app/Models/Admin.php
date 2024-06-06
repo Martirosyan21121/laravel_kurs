@@ -23,6 +23,7 @@ class Admin extends Model
             'updated_at' => 'datetime',
         ];
     }
+
     public static function deactivateUser($userId)
     {
         $user = User::findOrFail($userId);

@@ -22,7 +22,7 @@
     @endif
 
     @if (session('successUpdate'))
-        <div class="alert alert-success" id="successMessage" style="width: 300px;">
+        <div class="alert alert-success" id="successMessage" style="width: 400px;">
             {{ session('successUpdate') }}
         </div>
     @endif

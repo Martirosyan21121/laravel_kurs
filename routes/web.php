@@ -11,7 +11,7 @@ Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('
 Route::get('/login', [UserController::class, 'loginForm'])->name('login');
 Route::get('/error', [UserController::class])->name('error');
 
-Route::post('/register', [UserController::class, 'register'])->name('register');
+Route::post('/register', [UserController::class, 'register'])->name('registerPost');
 Route::post('/login', [UserController::class, 'login']);
 
 //for users
@@ -26,11 +26,11 @@ Route::get('/task/updateStatus/{id}', [TaskController::class, 'updateTaskStatus'
 
 Route::post('/task/updateTaskData/{id}', [TaskController::class, 'updateTask'])->name('tasks.updateTaskData')->middleware('user');
 Route::post('/addTaskData', [TaskController::class, 'addTaskData'])->name('tasks.addTaskData')->middleware('user');
-Route::post('/updateData', [UserController::class, 'updateData'])->name('tasks.addTaskData')->middleware('user');
+Route::post('/updateData', [UserController::class, 'updateData'])->name('tasks.updateUserData')->middleware('user');
+
 
 //for all Authenticated
 Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
-
 // for admin
 Route::get('/admin/{id}', [AdminController::class, 'showAdmin'])->name('admin.adminSinglePage')->middleware('admin');
 Route::get('/allUsers', [AdminController::class, 'showAllUsers'])->name('admin.allUsersData')->middleware('admin');
