@@ -41,7 +41,6 @@ class UserController extends Controller
     {
         return view('user.login');
     }
-
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
@@ -62,13 +61,11 @@ class UserController extends Controller
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));
     }
-
     public function updateDataForm()
     {
         $user = Auth::user();
         return view('user.update', ['user' => $user])->with('successLogin', 'You are successfully login in to admin page!');
     }
-
     public function updateData(Request $request)
     {
         $userId = Auth::id();
@@ -76,7 +73,6 @@ class UserController extends Controller
         $this->update($request->all());
         return redirect()->route('user.userSinglePage', $userId)->with('successUpdate', 'You are successfully update your account!');
     }
-
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -94,7 +90,6 @@ class UserController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [

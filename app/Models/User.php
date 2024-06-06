@@ -37,7 +37,6 @@ class User extends Authenticatable
             ->where('status', 0)
             ->get();
     }
-
     public static function showAllUsersByStatus1()
     {
         return self::where('status', 1)

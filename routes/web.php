@@ -28,9 +28,9 @@ Route::post('/task/updateTaskData/{id}', [TaskController::class, 'updateTask'])-
 Route::post('/addTaskData', [TaskController::class, 'addTaskData'])->name('tasks.addTaskData')->middleware('user');
 Route::post('/updateData', [UserController::class, 'updateData'])->name('tasks.updateUserData')->middleware('user');
 
-
 //for all Authenticated
 Route::post('/logout', [UserController::class, 'logout'])->name('logout')->middleware('auth');
+
 // for admin
 Route::get('/admin/{id}', [AdminController::class, 'showAdmin'])->name('admin.adminSinglePage')->middleware('admin');
 Route::get('/allUsers', [AdminController::class, 'showAllUsers'])->name('admin.allUsersData')->middleware('admin');
@@ -41,6 +41,8 @@ Route::get('/deactivate/user/byAdmin/{id}', [AdminController::class, 'deactivate
 Route::get('/activate/user/byAdmin/{id}', [AdminController::class, 'activateUserByAdmin'])->name('admin.activateUserByAdmin')->middleware('admin');
 Route::get('/delete/user/byAdmin/{id}', [AdminController::class, 'deleteUserByAdmin'])->name('admin.deleteUserByAdmin')->middleware('admin');
 Route::get('/addUserByAdminForm', [AdminController::class, 'addUserByAdminForm'])->name('admin.addUserByAdminForm')->middleware('admin');
+Route::get('/addTask/user/byAdmin/{id}', [AdminController::class, 'addTaskByAdminForm'])->name('admin.addTaskByAdminForm')->middleware('admin');
 
 Route::post('/addUserByAdmin', [AdminController::class, 'addUserByAdmin'])->name('admin.addUserByAdmin')->middleware('admin');
+Route::post('/addTask/byAdmin/{id}', [AdminController::class, 'addTaskDataByAdmin'])->name('admin.addTaskByAdmin')->middleware('admin');
 Route::post('/update/userData/{id}', [AdminController::class, 'updateUserData'])->name('admin.updateUserByAdmin')->middleware('admin');

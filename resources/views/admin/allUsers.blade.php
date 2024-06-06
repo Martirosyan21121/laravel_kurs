@@ -37,6 +37,7 @@
             <th scope="col">Created at</th>
             <th scope="col">Updated at</th>
             <th scope="col">Updated</th>
+            <th scope="col">Add Task</th>
             <th scope="col">Deactivate</th>
         </tr>
         </thead>
@@ -49,6 +50,7 @@
                 <td>{{$user->created_at}}</td>
                 <td>{{$user->updated_at}}</td>
                 <td><a class="btn btn-primary" href="/update/user/byAdmin/{{$user->id}}">Update</a></td>
+                <td><a class="btn btn-info" href="/addTask/user/byAdmin/{{$user->id}}">Add Task</a></td>
                 <td><a class="btn btn-warning" href="/deactivate/user/byAdmin/{{$user->id}}">Deactivate</a></td>
             </tr>
         @endforeach
