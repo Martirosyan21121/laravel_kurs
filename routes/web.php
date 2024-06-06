@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\AdminApiController;
 use App\Http\Controllers\Auth\UserController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ Route::get('/error', [UserController::class])->name('error');
 
 Route::post('/register', [UserController::class, 'register'])->name('registerPost');
 Route::post('/login', [UserController::class, 'login']);
+Route::post('/api/adminData/forLogin', [AdminApiController::class, 'loginApi']);
 
 //for users
 Route::get('/user/{id}', [UserController::class, 'show'])->name('user.userSinglePage')->middleware('user');

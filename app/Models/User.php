@@ -42,4 +42,8 @@ class User extends Authenticatable
         return self::where('status', 1)
             ->get();
     }
+
+    public static function isAdmin(){
+
+    }
 }

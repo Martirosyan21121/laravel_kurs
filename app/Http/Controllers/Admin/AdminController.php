@@ -26,7 +26,6 @@ class AdminController extends Controller
         $admin = Auth::user();
         return view('admin.adminSinglePage', compact('admin'));
     }
-
     public function showAllUsers()
     {
         $allUsers = User::showAllUsers();
@@ -53,6 +52,7 @@ class AdminController extends Controller
         Mail::to($user['email'])->send(new AccountDeactivate($user['email']));
         return redirect()->route('admin.allDeactivateUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully deactivated!']);
     }
+
     public function activateUserByAdmin($id)
     {
         Admin::activateUser($id);
@@ -160,6 +160,7 @@ class AdminController extends Controller
             'user_id' => $id
         ]);
     }
+
 
     protected function validatorTask(array $data)
     {
