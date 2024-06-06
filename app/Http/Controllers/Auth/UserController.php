@@ -59,7 +59,6 @@ class UserController extends Controller
                 return redirect()->route('user.userSinglePage', $userId)->with('successLogin', 'You are successfully login!');
             }
         }
-
         return back()->withErrors([
             'email' => 'Wrong email or password',
         ])->withInput($request->except('password'));

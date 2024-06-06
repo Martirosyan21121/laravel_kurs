@@ -53,7 +53,6 @@ class AdminController extends Controller
         Mail::to($user['email'])->send(new AccountDeactivate($user['email']));
         return redirect()->route('admin.allDeactivateUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully deactivated!']);
     }
-
     public function activateUserByAdmin($id)
     {
         Admin::activateUser($id);
