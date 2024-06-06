@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\MyTestEmail;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -24,7 +27,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         return view('user.userSinglePage', compact('user'));
     }
-
     public function userSinglePage()
     {
         $userId = Auth::id();
@@ -35,6 +37,7 @@ class UserController extends Controller
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
         Auth::login($user);
+        Mail::to($user['email'])->send(new MyTestEmail($user['name'], $user['email'], $user['created_at']));
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
     public function loginForm()
