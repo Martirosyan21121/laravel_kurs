@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\AccountDeactivate;
 use App\Models\Admin;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
@@ -46,7 +48,9 @@ class AdminController extends Controller
     public function deactivateUserByAdmin($id)
     {
         Admin::deactivateUser($id);
+        $user = User::findOrFail($id);
         $allUsers = User::showAllUsersByStatus1();
+        Mail::to($user['email'])->send(new AccountDeactivate($user['email']));
         return redirect()->route('admin.allDeactivateUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully deactivated!']);
     }
 

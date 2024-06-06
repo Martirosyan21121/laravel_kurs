@@ -30,10 +30,10 @@
 
 <body>
 <div class="container">
- <h1 style="color: lawngreen; text-align: center">Thanks for register</h1>
-    <p>Your name: {{$name}}</p>
+    <h1 style="color: red; text-align: center">Your account is deactivate</h1>
     <p>Your email: {{$email}}</p>
-    <p>Data and time of register: {{$createdAt}}</p>
 </div>
 </body>
 </html>
+
+
