@@ -10,9 +10,10 @@ Route::delete('deleteAccount/{id}', [ApiController::class, 'deleteUserByIdApi'])
 Route::patch('updateUserApi/{id}', [ApiController::class, 'updateUserByIdApi'])->name('apiUpdateUser');
 
 Route::post('loginApi', [ApiController::class, 'login'])->name('loginApi');
-Route::post('registerApi', [ApiController::class, 'register'])->name('registerApi');
+Route::put('registerApi', [ApiController::class, 'register'])->name('registerApi');
 // task
 
 Route::get('tasks/{id}', [ApiController::class, 'tasks'])->name('tasks');
 Route::get('task/{id}', [ApiController::class, 'task'])->name('task');
-
+Route::delete('task/delete/{id}', [ApiController::class, 'taskDelete'])->name('taskDelete');
+Route::put('task/addTask/{id}', [ApiController::class, 'addTask'])->name('addTask');

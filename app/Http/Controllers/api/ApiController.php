@@ -38,6 +38,7 @@ class ApiController extends Controller
         Auth::login($user);
         return response()->json(['user' => $user], 201);
     }
+
     public function findUserByIdApi($id)
     {
         $user = User::findOrFail($id);
@@ -78,7 +79,29 @@ class ApiController extends Controller
     public function task($id)
     {
         $task = Task::findOrFail($id);
-        return response($task,  200);
+        return response($task, 200);
+    }
+
+    public function taskDelete($id)
+    {
+        if (!empty(Task::findOrFail($id))) {
+            Task::deleteTask($id);
+            return response()->json(['the task was deleted - with id ' => $id], 404);
+        } else {
+            return response()->json(['the task now found ' => $id]);
+        }
+    }
+
+    public function addTask(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        if (empty($user)) {
+            return response()->json(['error' => 'User not found']);
+        } else
+        $this->validatorTask($request->all())->validate();
+        $this->createTask($request->all(), $id);
+        $allTasks = Task::findByUserId($id);
+        return response()->json(['all Tasks by User Id ' => $id, 'all Task' => $allTasks], 404);
     }
 
     protected function create(array $data)
@@ -141,6 +164,26 @@ class ApiController extends Controller
             'name.min' => 'The name must be at least 5 characters.',
             'email.regex' => 'Please enter a valid email address.',
             'email.required' => 'The email field is required.',
+        ]);
+    }
+
+    public function createTask(array $data, $id)
+    {
+        return Task::saveTask([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'user_id' => $id
+        ]);
+    }
+
+    protected function validatorTask(array $data)
+    {
+        return Validator::make($data, [
+            'title' => ['required', 'string'],
+            'description' => ['required', 'string'],
+        ], [
+            'title.required' => 'The title field is required.',
+            'description.required' => 'The description field is required.',
         ]);
     }
 }
