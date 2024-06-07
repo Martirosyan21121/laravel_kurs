@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('allUsers', [ApiController::class, 'showData'])->name('apiAllUsers');
 Route::get('findUser/{id}', [ApiController::class, 'findUserByIdApi'])->name('apiFindUser');
-
+// after register send gmail
 Route::delete('deleteAccount/{id}', [ApiController::class, 'deleteUserByIdApi'])->name('apiDeleteUser');
 Route::patch('updateUserApi/{id}', [ApiController::class, 'updateUserByIdApi'])->name('apiUpdateUser');
 
@@ -17,3 +17,6 @@ Route::get('tasks/{id}', [ApiController::class, 'tasks'])->name('tasks');
 Route::get('task/{id}', [ApiController::class, 'task'])->name('task');
 Route::delete('task/delete/{id}', [ApiController::class, 'taskDelete'])->name('taskDelete');
 Route::put('task/addTask/{id}', [ApiController::class, 'addTask'])->name('addTask');
+//update task
+//update task status
+
