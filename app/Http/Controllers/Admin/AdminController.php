@@ -43,7 +43,6 @@ class AdminController extends Controller
         $updateUser = User::findOrFail($id);
         return view('admin.updateUserByAdmin', ['user' => $updateUser]);
     }
-
     public function deactivateUserByAdmin($id)
     {
         Admin::deactivateUser($id);
@@ -102,7 +101,6 @@ class AdminController extends Controller
         $allUsers = User::all();
         return redirect()->route('admin.allUsersData', ['users' => $allUsers])->with(['success' => 'The user data was successfully updated!']);
     }
-
     protected function validatorUpdate(array $data)
     {
         return Validator::make($data, [
@@ -115,7 +113,6 @@ class AdminController extends Controller
             'email.required' => 'The email field is required.',
         ]);
     }
-
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -133,7 +130,6 @@ class AdminController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function update(int $id, array $data)
     {
         $user = User::findOrFail($id);
@@ -141,7 +137,6 @@ class AdminController extends Controller
         $user->save();
         return $user;
     }
-
     public function addTaskDataByAdmin(Request $request, $id)
     {
         $this->validatorTask($request->all())->validate();
@@ -160,8 +155,6 @@ class AdminController extends Controller
             'user_id' => $id
         ]);
     }
-
-
     protected function validatorTask(array $data)
     {
         return Validator::make($data, [

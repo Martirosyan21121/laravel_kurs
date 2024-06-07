@@ -34,6 +34,7 @@
     <p>Your name: {{$name}}</p>
     <p>Your email: {{$email}}</p>
     <p>Data and time of register: {{$createdAt}}</p>
+
 </div>
 </body>
 </html>
