@@ -91,7 +91,6 @@ class ApiController extends Controller
             return response()->json(['the task now found ' => $id]);
         }
     }
-
     public function addTask(Request $request, $id)
     {
         $user = User::findOrFail($id);
@@ -103,6 +102,14 @@ class ApiController extends Controller
         $allTasks = Task::findByUserId($id);
         return response()->json(['all Tasks by User Id ' => $id, 'all Task' => $allTasks], 404);
     }
+    public function updateTask(Request $request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $this->validatorTask($request->all())->validate();
+        $this->updateTaskApi($request->all(), $id);
+        return response()->json(['Tasks was successfully updated by Id ' => $id, 'task' => $task, 'User Id' => $task['user_id']], 404);
+    }
+
 
     protected function create(array $data)
     {
@@ -112,7 +119,6 @@ class ApiController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
-
     protected function update(array $data, $id)
     {
         $user = User::findOrFail($id);
@@ -120,7 +126,13 @@ class ApiController extends Controller
         $user->save();
         return $user;
     }
-
+    protected function updateTaskApi(array $data, $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->fill($data);
+        $task->save();
+        return $task;
+    }
     protected function validatorReg(array $data)
     {
         return Validator::make($data, [
@@ -138,7 +150,6 @@ class ApiController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [
@@ -166,7 +177,6 @@ class ApiController extends Controller
             'email.required' => 'The email field is required.',
         ]);
     }
-
     public function createTask(array $data, $id)
     {
         return Task::saveTask([
@@ -175,7 +185,6 @@ class ApiController extends Controller
             'user_id' => $id
         ]);
     }
-
     protected function validatorTask(array $data)
     {
         return Validator::make($data, [

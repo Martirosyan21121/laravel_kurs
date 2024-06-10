@@ -24,7 +24,7 @@
     <br>
 
     @if (session('success'))
-        <div class="alert alert-success" id="successMessage" style="width: 350px;">
+        <div class="alert alert-success" id="successMessage" style="width: 500px">
             {{ session('success') }}
         </div>
     @endif
