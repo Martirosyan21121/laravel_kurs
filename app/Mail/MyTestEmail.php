@@ -17,14 +17,12 @@ class MyTestEmail extends Mailable
     {
         //
     }
-
     public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'My Test Email',
         );
     }
-
     public function content(): Content
     {
         return new Content(
@@ -34,7 +32,6 @@ class MyTestEmail extends Mailable
                 'createdAt' => $this->createdAt],
         );
     }
-
     public function attachments(): array
     {
         return [];

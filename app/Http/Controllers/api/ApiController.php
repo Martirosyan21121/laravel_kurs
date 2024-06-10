@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use App\Models\Task;
 use App\Models\User;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -12,17 +15,10 @@ use Illuminate\Support\Facades\Validator;
 
 class ApiController extends Controller
 {
-    public function showData()
-    {
-        $user = User::all();
-        return response()->json($user);
-    }
-
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
         $this->validatorLogin($request->all())->validate();
-
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
             return response()->json(['user' => $user], 200);
@@ -30,7 +26,6 @@ class ApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-
     public function register(Request $request)
     {
         $this->validatorReg($request->all())->validate();
@@ -38,79 +33,210 @@ class ApiController extends Controller
         Auth::login($user);
         return response()->json(['user' => $user], 201);
     }
-
     public function findUserByIdApi($id)
     {
-        $user = User::findOrFail($id);
-        if ($user) {
-            return response()->json($user);
-        } else {
-            return response()->json(['error' => 'User not found'], 404);
+        try {
+            $user = User::findOrFail($id);
+            if ($user) {
+                return response()->json($user);
+            } else {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'User not found',
+                'user_id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to find the user',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
-
-    public function deleteUserByIdApi($id)
-    {
-        $user = User::findOrFail($id);
-        if ($user) {
-            $user->delete();
-            return response()->json([$user, 'message' => 'User deleted successfully'], 200);
-        } else {
-            return response()->json(['error' => 'User not found'], 404);
-        }
-    }
-
     public function updateUserByIdApi($id, Request $request)
     {
-        $this->validatorUpdateApi($request->all())->validate();
-        $this->update($request->all(), $id);
-        $user = User::findOrFail($request['id']);
+        try {
+            $this->validatorUpdateApi($request->all())->validate();
+            $this->update($request->all(), $id);
+            $user = User::findOrFail($request['id']);
+            return response()->json([$user, 'message' => 'User updated successfully'], 200);
 
-        return response()->json([$user, 'message' => 'User updated successfully'], 200);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'User not found',
+                'user_id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update the user',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
-
     public function tasks($id)
     {
-        $tasks = Task::findByUserId($id);
-        $user = User::findOrFail($id);
-        return response()->json(['All tasks by user Id' => $tasks, 'user' => $user], 200);
+        try {
+            $tasks = Task::findByUserId($id);
+            $user = User::findOrFail($id);
+            return response()->json(['All tasks by user Id' => $tasks, 'user' => $user], 200);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'User not found',
+                'user_id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to find the tasks',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
-
     public function task($id)
     {
-        $task = Task::findOrFail($id);
-        return response($task, 200);
+        try {
+            $task = Task::findOrFail($id);
+            return response($task, 200);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'Task not found',
+                'task id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to find the task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
-
     public function taskDelete($id)
     {
-        if (!empty(Task::findOrFail($id))) {
-            Task::deleteTask($id);
+        try {
+            Task::findOrFail($id)->delete();
             return response()->json(['the task was deleted - with id ' => $id], 404);
-        } else {
-            return response()->json(['the task now found ' => $id]);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'Task not found',
+                'task id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to delete the task',
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
     public function addTask(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        if (empty($user)) {
-            return response()->json(['error' => 'User not found']);
-        } else
-        $this->validatorTask($request->all())->validate();
-        $this->createTask($request->all(), $id);
-        $allTasks = Task::findByUserId($id);
-        return response()->json(['all Tasks by User Id ' => $id, 'all Task' => $allTasks], 404);
+        try {
+            $user = User::findOrFail($id);
+            $this->validatorTask($request->all())->validate();
+            $this->createTask($request->all(), $id);
+            $allTasks = Task::findByUserId($id);
+            return response()->json(['all Tasks by User Id ' => $user['id'], 'all Task' => $allTasks], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'User not found',
+                'user_id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to add task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
     public function updateTask(Request $request, $id)
     {
-        $task = Task::findOrFail($id);
-        $this->validatorTask($request->all())->validate();
-        $this->updateTaskApi($request->all(), $id);
-        return response()->json(['Tasks was successfully updated by Id ' => $id, 'task' => $task, 'User Id' => $task['user_id']], 404);
+        try {
+            $this->validatorTask($request->all())->validate();
+            $this->updateTaskApi($request->all(), $id);
+            $task = Task::findOrFail($request['id']);
+            return response()->json(['Tasks was successfully updated by Id ' => $id, 'task' => $task, 'User Id' => $task['user_id']], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'Task not found',
+                'task id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
-
-
+    public function allUsersData()
+    {
+        $user = User::all();
+        return response()->json($user);
+    }
+    public function deleteUsers($id)
+    {
+        try {
+            User::findOrFail($id)->delete();
+            return response()->json(['The User delete -> by id ' => $id], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json([
+                'error' => 'User not found',
+                'user_id' => $id
+            ], 404);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function addTaskByAdmin(Request $request, $Id)
+    {
+        try {
+            $user = User::findOrFail($Id);
+            $this->validatorTask($request->all())->validate();
+            $this->createTask($request->all(), $Id);
+            $allTasks = Task::findByUserId($Id);
+            return response()->json(['all Tasks by User Id ' => $user['id'], 'all Task' => $allTasks], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'User not found',
+                'user_id' => $Id]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function deactivateUser($Id)
+    {
+        try {
+            $user = User::findOrFail($Id);
+            Admin::deactivateUser($user['id']);
+            return response()->json(['deactivate User by Id ' => $Id], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'User not found',
+                'user_id' => $Id]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+    public function activateUser($Id)
+    {
+        try {
+            $user = User::findOrFail($Id);
+            Admin::activateUser($user['id']);
+            return response()->json(['activate User by Id ' => $Id], 404);
+        } catch (ModelNotFoundException) {
+            return response()->json(['error' => 'User not found',
+                'user_id' => $Id]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     protected function create(array $data)
     {
         return User::create([
@@ -164,7 +290,6 @@ class ApiController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
-
     protected function validatorUpdateApi(array $data)
     {
         return Validator::make($data, [
