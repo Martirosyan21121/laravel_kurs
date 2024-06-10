@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
+use App\Models\PersonalAccessToken;
 use App\Models\Task;
 use App\Models\User;
 use Exception;
@@ -28,6 +29,7 @@ class ApiController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
+
     public function register(Request $request)
     {
         $this->validatorReg($request->all())->validate();
@@ -35,16 +37,15 @@ class ApiController extends Controller
         Auth::login($user);
         return response()->json(['user' => $user], 201);
     }
+
     public function findUserByIdApi($id)
     {
         try {
             $user = User::findOrFail($id);
-            if ($user) {
-                return response()->json($user);
-            } else {
-                return response()->json(['error' => 'User not found'], 404);
-            }
-        } catch (ModelNotFoundException $e) {
+            $token = PersonalAccessToken::findByUserId($id);
+            return response()->json([$user, 'token' => $token['name']]);
+
+        } catch (ModelNotFoundException) {
             return response()->json([
                 'error' => 'User not found',
                 'user_id' => $id
@@ -56,6 +57,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function updateUserByIdApi($id, Request $request)
     {
         try {
@@ -76,6 +78,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function tasks($id)
     {
         try {
@@ -94,6 +97,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function task($id)
     {
         try {
@@ -111,6 +115,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function taskDelete($id)
     {
         try {
@@ -128,6 +133,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function addTask(Request $request, $id)
     {
         try {
@@ -148,6 +154,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function updateTask(Request $request, $id)
     {
         try {
@@ -167,11 +174,13 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function allUsersData()
     {
         $user = User::all();
         return response()->json($user);
     }
+
     public function deleteUsers($id)
     {
         try {
@@ -189,6 +198,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function addTaskByAdmin(Request $request, $Id)
     {
         try {
@@ -207,6 +217,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function deactivateUser($Id)
     {
         try {
@@ -223,6 +234,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function activateUser($Id)
     {
         try {
@@ -239,6 +251,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     protected function create(array $data)
     {
         return User::create([
@@ -247,6 +260,7 @@ class ApiController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
     protected function update(array $data, $id)
     {
         $user = User::findOrFail($id);
@@ -254,6 +268,7 @@ class ApiController extends Controller
         $user->save();
         return $user;
     }
+
     protected function updateTaskApi(array $data, $id)
     {
         $task = Task::findOrFail($id);
@@ -261,6 +276,7 @@ class ApiController extends Controller
         $task->save();
         return $task;
     }
+
     protected function validatorReg(array $data)
     {
         return Validator::make($data, [
@@ -278,6 +294,7 @@ class ApiController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
+
     protected function validatorLogin(array $data)
     {
         return Validator::make($data, [
@@ -292,6 +309,7 @@ class ApiController extends Controller
             'password.regex' => 'The password must contain at least one uppercase letter, one lowercase letter, and one digit.',
         ]);
     }
+
     protected function validatorUpdateApi(array $data)
     {
         return Validator::make($data, [
@@ -304,6 +322,7 @@ class ApiController extends Controller
             'email.required' => 'The email field is required.',
         ]);
     }
+
     public function createTask(array $data, $id)
     {
         return Task::saveTask([
@@ -312,6 +331,7 @@ class ApiController extends Controller
             'user_id' => $id
         ]);
     }
+
     protected function validatorTask(array $data)
     {
         return Validator::make($data, [

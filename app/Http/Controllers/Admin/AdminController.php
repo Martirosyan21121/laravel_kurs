@@ -20,7 +20,6 @@ class AdminController extends Controller
         $admin = User::findOrFail($id);
         return view('admin.adminSinglePage', compact('admin'));
     }
-
     public function adminPage()
     {
         $admin = Auth::user();
@@ -51,21 +50,18 @@ class AdminController extends Controller
         Mail::to($user['email'])->send(new AccountDeactivate($user['email']));
         return redirect()->route('admin.allDeactivateUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully deactivated!']);
     }
-
     public function activateUserByAdmin($id)
     {
         Admin::activateUser($id);
         $allUsers = User::showAllUsersByStatus1();
         return redirect()->route('admin.allUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully activated!']);
     }
-
     public function deleteUserByAdmin($id)
     {
         User::findOrFail($id)->delete();
         $allUsers = User::showAllUsersByStatus1();
         return redirect()->route('admin.allDeactivateUsersData', ['users' => $allUsers])->with(['success' => 'The user was successfully deleted!']);
     }
-
     public function addUserByAdminForm()
     {
         return view('admin.registerUser');
