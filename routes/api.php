@@ -10,6 +10,7 @@ Route::post('loginApi', [ApiController::class, 'login'])->name('loginApi');
 Route::put('registerApi', [ApiController::class, 'register'])->name('registerApi');
 // task
 
+
 Route::get('tasks/{id}', [ApiController::class, 'tasks'])->name('tasks');
 Route::get('task/{id}', [ApiController::class, 'task'])->name('task');
 Route::delete('task/delete/{id}', [ApiController::class, 'taskDelete'])->name('taskDelete');
