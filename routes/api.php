@@ -3,7 +3,7 @@
 use App\Http\Controllers\api\ApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('findUser/{id}', [ApiController::class, 'findUserByIdApi'])->name('apiFindUser');
+Route::get('findUser/{id}', [ApiController::class, 'findUserByIdApi'])->name('apiFindUser')->middleware('auth:sanctum');
 // after register send gmail
 Route::patch('updateUserApi/{id}', [ApiController::class, 'updateUserByIdApi'])->name('apiUpdateUser');
 Route::post('loginApi', [ApiController::class, 'login'])->name('loginApi');

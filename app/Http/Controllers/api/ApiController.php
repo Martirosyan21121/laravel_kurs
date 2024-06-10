@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
@@ -21,7 +22,8 @@ class ApiController extends Controller
         $this->validatorLogin($request->all())->validate();
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            return response()->json(['user' => $user], 200);
+            $token = $request->user()->createToken(Str::random(60));
+            return response()->json(['user' => $user, 'token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
