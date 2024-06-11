@@ -3,7 +3,7 @@
 use App\Http\Controllers\api\ApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('findUser/{id}', [ApiController::class, 'findUserByIdApi'])->name('apiFindUser')->middleware('auth:sanctum');
+Route::get('findUser/{id}', [ApiController::class, 'findUserByIdApi'])->name('apiFindUser')->middleware('token');
 Route::patch('updateUserApi/{id}', [ApiController::class, 'updateUserByIdApi'])->name('apiUpdateUser');
 Route::post('loginApi', [ApiController::class, 'login'])->name('loginApi');
 Route::put('registerApi', [ApiController::class, 'register'])->name('registerApi');
@@ -21,3 +21,5 @@ Route::delete('admin/deleteUser/{id}', [ApiController::class, 'deleteUsers'])->n
 Route::put('admin/addTaskByAdmin/{id}', [ApiController::class, 'addTaskByAdmin'])->name('addTaskByAdmin');
 Route::get('admin/deactivateUser/{id}', [ApiController::class, 'deactivateUser'])->name('deactivateUser');
 Route::get('admin/activateUser/{id}', [ApiController::class, 'activateUser'])->name('activateUser');
+
+Route::get('/logout/{id}', [ApiController::class, 'logout'])->name('logout');

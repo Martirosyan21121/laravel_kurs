@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\AdminAuthentication;
 use App\Http\Middleware\AuthMiddleware;
+use App\Http\Middleware\CheckBearerToken;
 use App\Http\Middleware\UserAuthentication;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth' => AuthMiddleware::class,
             'user' => UserAuthentication::class,
-            'admin' => AdminAuthentication::class
+            'admin' => AdminAuthentication::class,
+            'token' => CheckBearerToken::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

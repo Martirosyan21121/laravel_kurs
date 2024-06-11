@@ -22,10 +22,15 @@ class ApiController extends Controller
         $this->validatorLogin($request->all())->validate();
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $request->user()->createToken('Authorize token');
+            $existToken = PersonalAccessToken::findByUserId($user['id']);
+            if ($existToken !== null) {
+                return response()->json(['user' => $user, 'token' => $existToken], 200);
+            } else {
+                $token = $request->user()->createToken('Authorize token');
+            }
             return response()->json(['user' => $user, 'token' => $token], 200);
         } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
+            return response()->json(['error' => 'wrong email or password'], 401);
         }
     }
     public function register(Request $request)
@@ -35,7 +40,6 @@ class ApiController extends Controller
         Auth::login($user);
         return response()->json(['user' => $user], 201);
     }
-
     public function findUserByIdApi($id)
     {
         try {
@@ -54,7 +58,6 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
     public function updateUserByIdApi($id, Request $request)
     {
         try {
@@ -93,6 +96,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function task($id)
     {
         try {
@@ -149,6 +153,7 @@ class ApiController extends Controller
             ], 500);
         }
     }
+
     public function updateTask(Request $request, $id)
     {
         try {
@@ -245,7 +250,21 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
+    public function logout($Id)
+    {
+        try {
+            PersonalAccessToken::deleteByUserId($Id);
+            return response()->json(['User successfully logged out by Id ' => $Id], 404);
+        }catch (ModelNotFoundException) {
+            return response()->json(['error' => 'User not found',
+                'user_id' => $Id]);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'An error occurred while trying to update task',
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
     protected function create(array $data)
     {
         return User::create([

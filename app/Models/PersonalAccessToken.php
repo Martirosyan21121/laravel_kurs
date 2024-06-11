@@ -11,4 +11,10 @@ class PersonalAccessToken extends SanctumPersonalAccessToken
             ->where('tokenable_type', 'App\\Models\\User')
             ->first();
     }
+    public static function deleteByUserId($userId)
+    {
+        return static::where('tokenable_id', $userId)
+            ->where('tokenable_type', 'App\\Models\\User')
+            ->delete();
+    }
 }
