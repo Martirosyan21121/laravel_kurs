@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class ApiController extends Controller
 {
@@ -23,13 +22,12 @@ class ApiController extends Controller
         $this->validatorLogin($request->all())->validate();
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            $token = $request->user()->createToken(Str::random(60));
+            $token = $request->user()->createToken('Authorize token');
             return response()->json(['user' => $user, 'token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
     }
-
     public function register(Request $request)
     {
         $this->validatorReg($request->all())->validate();
@@ -43,8 +41,7 @@ class ApiController extends Controller
         try {
             $user = User::findOrFail($id);
             $token = PersonalAccessToken::findByUserId($id);
-            return response()->json([$user, 'token' => $token['name']]);
-
+            return response()->json([$user, 'token' => $token]);
         } catch (ModelNotFoundException) {
             return response()->json([
                 'error' => 'User not found',
@@ -78,7 +75,6 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
     public function tasks($id)
     {
         try {
@@ -97,7 +93,6 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
     public function task($id)
     {
         try {
@@ -154,7 +149,6 @@ class ApiController extends Controller
             ], 500);
         }
     }
-
     public function updateTask(Request $request, $id)
     {
         try {

@@ -36,7 +36,7 @@ class UserController extends Controller
         $this->validator($request->all())->validate();
         $user = $this->create($request->all());
         Auth::login($user);
-        Mail::to($user['email'])->send(new MyTestEmail($user['name'], $user['email'], $user['created_at']));
+//        Mail::to($user['email'])->send(new MyTestEmail($user['name'], $user['email'], $user['created_at']));
         return redirect()->route('user.userSinglePage', $user->id)->with('success', 'You are successfully registered!');
     }
     public function loginForm()

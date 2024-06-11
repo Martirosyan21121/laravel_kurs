@@ -30,7 +30,6 @@ class AdminController extends Controller
         $allUsers = User::showAllUsers();
         return view('admin.allUsers', ['users' => $allUsers]);
     }
-
     public function showAllDeactivateUsers()
     {
         $allUsers = User::showAllUsersByStatus1();

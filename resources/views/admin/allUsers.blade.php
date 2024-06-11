@@ -11,15 +11,30 @@
             word-wrap: break-word;
             max-width: 200px;
         }
+
+        .header {
+             display: flex;
+             align-items: center;
+         }
+        .header a, .header input {
+            margin-right: 20px;
+        }
+        .header a:last-of-type {
+            margin-left: 0;
+        }
+        .header input {
+            margin-right: 0;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2 style="margin-top: 10px; text-align: center">All Users</h2>
-    <header>
+    <header class="header">
         <a class="btn btn-danger" style="color: white;" href="/adminPage">Back</a>
         <a class="btn btn-warning" style="color: white; margin-left: 20px" href="/allUsers/deactivateUsers">Deactivate Users</a>
+        <input class="form-control" type="text" onkeyup="searchUser()" placeholder="Search email..." id="searchUser" style="margin-left: 20px">
     </header>
     <br>
 
@@ -28,7 +43,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <table class="table table-striped table-dark">
+    <table id="userTable" class="table table-striped table-dark">
         <thead>
         <tr>
             <th scope="col">ID</th>
@@ -64,6 +79,25 @@
             message.style.display = 'none'
         }
     }, 3000);
+
+    function searchUser() {
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("searchUser");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("userTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
 </script>
 </body>
 </html>
